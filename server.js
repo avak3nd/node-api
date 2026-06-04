@@ -3,7 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./mongodb/connect");
-const usersRoutes = require("./router/usersRoutes");
+const gamesRoutes = require("./router/gamesRoutes");
 
 const app = express();
 
@@ -14,11 +14,11 @@ connectDB();
 
 app.get("/", (req, res) => {
     res.status(200).json({
-        message: "Welcome to Users API",
+        message: "Welcome to React Games API",
     });
 });
 
-app.use("/api/users", usersRoutes);
+app.use("/api/games", gamesRoutes);
 
 const PORT = process.env.PORT || 3000;
 
