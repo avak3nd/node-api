@@ -7,30 +7,7 @@ const gamesRoutes = require("./router/gamesRoutes");
 
 const app = express();
 
-const allowedOrigins = [
-    "http://localhost:5173",
-];
-
-app.use(
-    cors({
-        origin: function (origin, callback) {
-            // allow requests with no origin (like Postman)
-            if (!origin) return callback(null, true);
-
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            }
-
-            return callback(new Error("Not allowed by CORS"));
-        },
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        credentials: true,
-    })
-);
-
-// IMPORTANT: handle preflight requests
-app.options("*", cors());
-
+app.use(cors());
 app.use(express.json());
 
 connectDB();
@@ -42,5 +19,13 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/games", gamesRoutes);
+
+const PORT = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== "production") {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
 
 module.exports = app;
