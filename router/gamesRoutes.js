@@ -7,8 +7,10 @@ const deleteGame = require("../controllers/games/deleteGame");
 
 const router = express.Router();
 
-router.get("/", getGames);
+router.get("/tag/:tag", getGames);
 router.get("/:id", getGames);
+router.get("/", getGames);
+
 router.post("/", createGame);
 router.put("/:id", updateGame);
 router.delete("/:id", deleteGame);

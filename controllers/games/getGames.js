@@ -1,9 +1,19 @@
 const Game = require("../../mongodb/models/Game");
 
+const VALID_TAGS = [
+    "new",
+    "sale",
+    "free",
+    "new_release",
+    "trending",
+    "most_popular",
+];
+
 const getGames = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, tag } = req.params;
 
+        // GET /api/games/:id
         if (id) {
             const game = await Game.findById(id);
 
@@ -19,9 +29,29 @@ const getGames = async (req, res) => {
             });
         }
 
+        // GET /api/games/tag/:tag
+        if (tag) {
+            if (!VALID_TAGS.includes(tag)) {
+                return res.status(400).json({
+                    message: "Invalid tag",
+                });
+            }
+
+            const games = await Game.find({
+                tag: tag,
+            });
+
+            return res.status(200).json({
+                message: `${tag} games fetched successfully`,
+                count: games.length,
+                games,
+            });
+        }
+
+        // GET /api/games
         const games = await Game.find();
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Games fetched successfully",
             count: games.length,
             games,
