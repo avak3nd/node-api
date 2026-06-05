@@ -12,6 +12,7 @@ const VALID_TAGS = [
 const getGames = async (req, res) => {
     try {
         const { id, tag } = req.params;
+        const limit = parseInt(req.query.limit);
 
         // GET /api/games/:id
         if (id) {
@@ -37,9 +38,13 @@ const getGames = async (req, res) => {
                 });
             }
 
-            const games = await Game.find({
-                tag: tag,
-            });
+            let query = Game.find({ tag });
+
+            if (!isNaN(limit) && limit > 0) {
+                query = query.limit(limit);
+            }
+
+            const games = await query;
 
             return res.status(200).json({
                 message: `${tag} games fetched successfully`,
@@ -49,7 +54,13 @@ const getGames = async (req, res) => {
         }
 
         // GET /api/games
-        const games = await Game.find();
+        let query = Game.find();
+
+        if (!isNaN(limit) && limit > 0) {
+            query = query.limit(limit);
+        }
+
+        const games = await query;
 
         return res.status(200).json({
             message: "Games fetched successfully",
