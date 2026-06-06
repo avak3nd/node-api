@@ -16,7 +16,7 @@ const searchGames = async (req, res) => {
                 $options: "i",
             },
         })
-            .select("_id title img")
+            .select("_id title img type")
             .limit(10);
 
         return res.status(200).json({
