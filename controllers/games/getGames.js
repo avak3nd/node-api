@@ -13,6 +13,7 @@ const getGames = async (req, res) => {
     try {
         const { id, tag } = req.params;
         const limit = parseInt(req.query.limit);
+        const page = parseInt(req.query.page) || 1;
 
         // GET /api/games/:id
         if (id) {
@@ -41,7 +42,9 @@ const getGames = async (req, res) => {
             let query = Game.find({ tag });
 
             if (!isNaN(limit) && limit > 0) {
-                query = query.limit(limit);
+                query = query
+                    .skip((page - 1) * limit)
+                    .limit(limit);
             }
 
             const games = await query;
@@ -57,7 +60,9 @@ const getGames = async (req, res) => {
         let query = Game.find();
 
         if (!isNaN(limit) && limit > 0) {
-            query = query.limit(limit);
+            query = query
+                .skip((page - 1) * limit)
+                .limit(limit);
         }
 
         const games = await query;
