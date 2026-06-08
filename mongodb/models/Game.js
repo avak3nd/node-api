@@ -40,7 +40,7 @@ const gameSchema = new mongoose.Schema(
 
         tag: {
             type: [String],
-            default: [],
+            required: true,
             enum: [
                 "new",
                 "sale",
@@ -49,6 +49,12 @@ const gameSchema = new mongoose.Schema(
                 "trending",
                 "most_popular",
             ],
+            validate: {
+                validator: function (value) {
+                    return Array.isArray(value) && value.length > 0;
+                },
+                message: "At least one tag is required",
+            },
         },
     },
     {
