@@ -56,6 +56,31 @@ const gameSchema = new mongoose.Schema(
                 message: "At least one tag is required",
             },
         },
+
+        badge: {
+            type: [String],
+            required: true,
+            default: undefined, 
+        },
+
+        rank: {
+            type: Number,
+            default: null,
+        },
+
+        comment: {
+            type: [String],
+            required: true,
+            default: undefined,
+            enum: [
+                "Great for Beginners",
+                "Beautiful Visuals",
+                "Highly Recommended",
+                "Amazing Characters",
+                "Diverse Characters",
+                "Amazing Storytelling",
+            ],
+        },
     },
     {
         timestamps: true,

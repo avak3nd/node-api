@@ -7,15 +7,29 @@ const createGame = async (req, res) => {
             ...req.body,
         };
 
-        if (gameData.tag) {
-            if (Array.isArray(gameData.tag)) {
-                gameData.tag = gameData.tag.map((tag) => tag.trim());
-            } else {
-                gameData.tag = gameData.tag
-                    .split(",")
-                    .map((tag) => tag.trim())
-                    .filter(Boolean);
+        const normalizeArray = (value) => {
+            if (!value) return value;
+
+            if (Array.isArray(value)) {
+                return value.map((v) => v.trim()).filter(Boolean);
             }
+
+            return value
+                .split(",")
+                .map((v) => v.trim())
+                .filter(Boolean);
+        };
+
+        if (gameData.tag) {
+            gameData.tag = normalizeArray(gameData.tag);
+        }
+
+        if (gameData.badge) {
+            gameData.badge = normalizeArray(gameData.badge);
+        }
+
+        if (gameData.comment) {
+            gameData.comment = normalizeArray(gameData.comment);
         }
 
         const game = await Game.create(gameData);
