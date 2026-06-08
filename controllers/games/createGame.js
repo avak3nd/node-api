@@ -2,7 +2,12 @@ const Game = require("../../mongodb/models/Game");
 
 const createGame = async (req, res) => {
     try {
-        const game = await Game.create(req.body);
+        const gameData = {
+            ...req.query,
+            ...req.body
+        };
+
+        const game = await Game.create(gameData);
 
         res.status(201).json({
             message: "Game created successfully",
