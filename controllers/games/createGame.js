@@ -4,8 +4,19 @@ const createGame = async (req, res) => {
     try {
         const gameData = {
             ...req.query,
-            ...req.body
+            ...req.body,
         };
+
+        if (gameData.tag) {
+            if (Array.isArray(gameData.tag)) {
+                gameData.tag = gameData.tag.map((tag) => tag.trim());
+            } else {
+                gameData.tag = gameData.tag
+                    .split(",")
+                    .map((tag) => tag.trim())
+                    .filter(Boolean);
+            }
+        }
 
         const game = await Game.create(gameData);
 
