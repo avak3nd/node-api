@@ -1,10 +1,16 @@
 const Game = require("../../mongodb/models/Game");
+const normalizeGameData = require("../../helpers/normalizeGameData");
 
 const updateGame = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const game = await Game.findByIdAndUpdate(id, req.body, {
+        const gameData = normalizeGameData({
+            ...req.query,
+            ...req.body,
+        });
+
+        const game = await Game.findByIdAndUpdate(id, gameData, {
             new: true,
             runValidators: true,
         });

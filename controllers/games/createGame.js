@@ -1,36 +1,12 @@
 const Game = require("../../mongodb/models/Game");
+const normalizeGameData = require("../../helpers/normalizeGameData");
 
 const createGame = async (req, res) => {
     try {
-        const gameData = {
+        const gameData = normalizeGameData({
             ...req.query,
             ...req.body,
-        };
-
-        const normalizeArray = (value) => {
-            if (!value) return value;
-
-            if (Array.isArray(value)) {
-                return value.map((v) => v.trim()).filter(Boolean);
-            }
-
-            return value
-                .split(",")
-                .map((v) => v.trim())
-                .filter(Boolean);
-        };
-
-        if (gameData.tag) {
-            gameData.tag = normalizeArray(gameData.tag);
-        }
-
-        if (gameData.badge) {
-            gameData.badge = normalizeArray(gameData.badge);
-        }
-
-        if (gameData.comment) {
-            gameData.comment = normalizeArray(gameData.comment);
-        }
+        });
 
         const game = await Game.create(gameData);
 
