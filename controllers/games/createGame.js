@@ -19,10 +19,8 @@ const createGame = async (req, res) => {
 
         const game = new Game(gameData);
 
-        // Validate mongoose schema BEFORE uploading anything
         await game.validate();
 
-        // Validate cover image
         await validateImage(
             req.files.img[0].buffer,
             1200,
@@ -41,7 +39,6 @@ const createGame = async (req, res) => {
             publicId: uploadedImg.public_id,
         };
 
-        // Optional banner image
         if (req.files?.img2?.[0]) {
             await validateImage(
                 req.files.img2[0].buffer,
@@ -69,7 +66,6 @@ const createGame = async (req, res) => {
             game,
         });
     } catch (error) {
-        // Cleanup Cloudinary uploads if something failed
         if (uploadedPublicIds.length) {
             await Promise.allSettled(
                 uploadedPublicIds.map((publicId) =>
