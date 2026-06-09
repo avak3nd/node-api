@@ -1,10 +1,11 @@
 const Game = require("../../mongodb/models/Game");
+const cloudinary = require("../../config/cloudinary");
 
 const deleteGame = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        const game = await Game.findByIdAndDelete(id);
+        const game = await Game.findById(
+            req.params.id
+        );
 
         if (!game) {
             return res.status(404).json({
@@ -12,14 +13,23 @@ const deleteGame = async (req, res) => {
             });
         }
 
+        await cloudinary.uploader.destroy(
+            `${game._id}/cover`
+        );
+
+        await cloudinary.uploader.destroy(
+            `${game._id}/banner`
+        );
+
+        await game.deleteOne();
+
         res.status(200).json({
-            message: "Game deleted successfully",
-            game,
+            message:
+                "Game deleted successfully",
         });
     } catch (error) {
         res.status(400).json({
-            message: "Failed to delete game",
-            error: error.message,
+            message: error.message,
         });
     }
 };

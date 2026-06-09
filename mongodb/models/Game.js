@@ -9,13 +9,13 @@ const gameSchema = new mongoose.Schema(
         },
 
         img: {
-            type: String,
-            required: true,
+            url: String,
+            publicId: String,
         },
 
         img2: {
-            type: String,
-            default: null,
+            url: String,
+            publicId: String,
         },
 
         type: {
@@ -60,7 +60,7 @@ const gameSchema = new mongoose.Schema(
         badge: {
             type: [String],
             required: true,
-            default: undefined, 
+            default: undefined,
         },
 
         rank: {
