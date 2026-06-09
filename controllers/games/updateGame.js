@@ -77,13 +77,13 @@ const updateGame = async (req, res) => {
             );
 
         res.status(200).json({
-            message:
-                "Game updated successfully",
+            message: "Game updated successfully",
             game: updatedGame,
         });
     } catch (error) {
         res.status(400).json({
-            message: error.message,
+            message: "Failed to update game",
+            error: error.message,
         });
     }
 };

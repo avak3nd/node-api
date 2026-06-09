@@ -24,12 +24,12 @@ const deleteGame = async (req, res) => {
         await game.deleteOne();
 
         res.status(200).json({
-            message:
-                "Game deleted successfully",
+            message: "Game deleted successfully",
         });
     } catch (error) {
         res.status(400).json({
-            message: error.message,
+            message: "Failed to delete game",
+            error: error.message,
         });
     }
 };
