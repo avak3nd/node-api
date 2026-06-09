@@ -14,11 +14,11 @@ const deleteGame = async (req, res) => {
         }
 
         await cloudinary.uploader.destroy(
-            `games/${game._id}/cover`
+            `${game._id}/cover`
         );
 
         await cloudinary.uploader.destroy(
-            `games/${game._id}/banner`
+            `${game._id}/banner`
         );
 
         await game.deleteOne();

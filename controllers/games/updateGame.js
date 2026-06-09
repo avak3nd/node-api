@@ -51,7 +51,7 @@ const updateGame = async (req, res) => {
             );
 
             await cloudinary.uploader.destroy(
-                `/${game._id}/banner`
+                `${game._id}/banner`
             );
 
             const uploaded =
